@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flashcards Frequent Words</title>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column; /* ensures the children (top-bar and display-area) are stacked vertically */
+      }
+      #top-bar {
+        display: flex;
+        justify-content: center;
+        background: #333;
+        padding: 10px 0;
+      }
+      .button {
+        background-color: #1ebd61;
+        color: white;
+        margin: 0 10px;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        border: none;
+        cursor: pointer;
+      }
+
+      .clickable-area {
+        height: 100%;
+        position: absolute;
+        top: 0;
+        width: 30%;
+        cursor: pointer;
+      }
+      #left-area {
+        left: 0;
+      }
+      #right-area {
+        right: 0;
+      }
+
+      #display-area {
+        flex-grow: 1; /* allows this area to take up remaining space */
+        background: #f3f3f3; /* light grey to distinguish area */
+        display: flex;
+        align-items: center; /* vertical centering */
+        justify-content: center; /* horizontal centering */
+        position: relative; /* allows absolute positioning for children */
+        overflow: hidden; /* in case content overflows */
+        font-size: 24vmin;
+      }
+
+      .unselectable {
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none; /* Non-prefixed version, currently supported by
+                                  Chrome, Opera, Firefox, and Edge */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="top-bar">
+      <button class="button" onclick="flashButton(this);handleClick('A')">
+        ABC
+      </button>
+      <button class="button" onclick="flashButton(this);handleClick('B')">
+        Abc
+      </button>
+      <button class="button" onclick="flashButton(this);handleClick('C')">
+        abc
+      </button>
+    </div>
+
+    <div id="display-area" class="unselectable">
+      <div
+        id="left-area"
+        class="clickable-area"
+        onclick="leftAreaClicked()"
+      ></div>
+      <div id="the-word"></div>
+      <div
+        id="right-area"
+        class="clickable-area"
+        onclick="rightAreaClicked()"
+      ></div>
+    </div>
+
+    <script>
+      var word_list = [
+        "a",
+        "all",
+        "am",
+        "and",
+        "are",
+        "as",
+        "at",
+        "be",
+        "but",
+        "by",
+        "came",
+        "can",
+        "come",
+        "did",
+        "do",
+        "for",
+        "from",
+        "go",
+        "got",
+        "had",
+        "has",
+        "have",
+        "he",
+        "her",
+        "here",
+        "him",
+        "his",
+        "I",
+        "if",
+        "in",
+        "into",
+        "is",
+        "it",
+        "like",
+        "look",
+        "made",
+        "make",
+        "me",
+        "my",
+        "no",
+        "not",
+        "of",
+        "on",
+        "one",
+        "or",
+        "out",
+        "said",
+        "saw",
+        "see",
+        "she",
+        "so",
+        "some",
+        "that",
+        "the",
+        "their",
+        "there",
+        "they",
+        "this",
+        "to",
+        "too",
+        "up",
+        "was",
+        "we",
+        "went",
+        "were",
+        "what",
+        "when",
+        "where",
+        "which",
+        "who",
+        "why",
+        "will",
+        "with",
+        "yes",
+        "you",
+        "your",
+      ];
+
+      function handleClick(button) {
+        // Implement what should happen when buttons A, B, or C are clicked
+        if (button == "A") {
+          capStyle = 0;
+        }
+        if (button == "B") {
+          capStyle = 1;
+        }
+        if (button == "C") {
+          capStyle = 2;
+        }
+        displayWord(wordIndex);
+      }
+
+      function leftAreaClicked() {
+        // Implement what should happen when the left area is clicked
+        wordIndex = wordIndex - 1;
+        if (wordIndex < 0) wordIndex = 0;
+        displayWord(wordIndex);
+      }
+
+      function rightAreaClicked() {
+        // Implement what should happen when the right area is clicked
+        wordIndex = wordIndex + 1;
+        if (wordIndex == randomWords.length) {
+          randomWords.push(pickRandomWord(word_list));
+        }
+        displayWord(wordIndex);
+      }
+
+      function flashButton(button) {
+        const originalColor = button.style.backgroundColor;
+        button.style.backgroundColor = "#30ff87"; // Blue color
+        setTimeout(() => {
+          button.style.backgroundColor = originalColor;
+        }, 200); // Change back to the original color after 200 milliseconds
+      }
+
+      function pickRandomWord(array) {
+        return array[Math.floor(Math.random() * array.length)];
+      }
+
+      function displayWord(index) {
+        var word = randomWords[wordIndex];
+        switch (capStyle) {
+          case 0:
+            word = word.toUpperCase();
+            break;
+          case 1:
+            word = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+            break;
+          case 2:
+            if (word == "I") word = word.toUpperCase();
+            else word = word.toLowerCase();
+            break;
+        }
+        document.getElementById("the-word").innerHTML = word;
+      }
+
+      // Generate a word and use it
+      var randomWords = [];
+      var wordIndex = 0;
+      var capStyle = 2;
+      randomWords[0] = pickRandomWord(word_list);
+      displayWord(wordIndex);
+    </script>
+  </body>
+</html>
