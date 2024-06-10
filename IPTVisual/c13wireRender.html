@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>MagVisual2 WebGL Renderer</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				background-color: #7f7f7f;
+				margin: 0px;
+				overflow: hidden;
+			}
+
+			#title {
+				width: 640px;
+				height: 100px;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				margin-top: 245px;
+				margin-left: -320px;
+				text-align: center;
+				font-family: Monospace;
+			}
+			
+            #canvas {
+				width: 640px;
+                height: 480px;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                margin-top: -240px;
+                margin-left: -320px;
+                border: 3px solid #000000;
+				border-radius: 3px;
+                box-shadow: 5px 10px 8px #101010;
+            }
+
+			a {
+				color: orange;
+				text-decoration: none;
+			}
+
+			a:hover {
+				color: #0080ff;
+			}
+
+			#logo {
+				width: 109px;
+				height: 46px;
+				position: fixed;
+				top: 50%;
+                left: 50%;
+                margin-top: -225px;
+                margin-left: -305px;
+				background-image: url("img/UoMLogo.png");
+				background-repeat: no-repeat;
+				background-color: transparent;
+				background-position: center;
+				background-size: contain;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div id="title">
+			<p>MagVisual2 WebGL Renderer by <a href="mailto:cheng.zhang@manchester.ac.uk" target="_blank">Gus Zhang</a>, powered by <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a></p>
+		</div>
+		<div id="canvas"></div>
+		<div id="logo"></div>
+
+		<script src="js/three.js"></script>
+
+        <script src="js/controls/OrbitControls.js"></script>
+
+        <script src="js/WebGL.js"></script>
+        
+		<script>
+            
+			if ( WEBGL.isWebGLAvailable() === false ) {
+				document.body.appendChild( WEBGL.getWebGLErrorMessage() );
+			}
+			var mouseX = 0, mouseY = 0;
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+            var camera, scene, renderer, controls;
+            var material;
+			var ArrowArray = new Array();
+			var frameCounter=0;
+			init();
+			animate();
+			function init() {
+                camera = new THREE.PerspectiveCamera( 33, 640 / 480, 0.001, 10 );
+				camera.position.set( -1 , 1 , 1 );
+				scene = new THREE.Scene();
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+                renderer.setPixelRatio( window.devicePixelRatio );
+                //renderer.setSize( window.innerWidth, window.innerHeight );
+                renderer.setSize( 640, 480 );
+                document.getElementById("canvas").appendChild( renderer.domElement );
+                controls = new THREE.OrbitControls( camera, renderer.domElement );
+				controls.minDistance = 0.01;
+				controls.maxDistance = 20;
+				
+				//material = new THREE.LineMaterial( { color: 0xffffff, vertexColors: THREE.VertexColors, linewidth: 10.0, dashed: false } );
+				
+                //controls.enableDamping = true;
+                //controls.dampingFactor = 0.5;
+				//
+				
+				//const response = fetch("sampleWireTrace.json");
+				var wireFiles=["Case3.wire0.dat.json","Case3.wire1.dat.json","Case3.wire2.dat.json","Case3.wire3.dat.json","Case3.wire4.dat.json","Case3.wire5.dat.json","Case3.wire6.dat.json","Case3.wire7.dat.json"];
+				wireFiles.forEach((filename)=>{
+					fetch(filename)
+					.then((response)=>{return response.json()})
+					.then((wireObj)=>{
+					material = new THREE.MeshBasicMaterial( { color: wireObj.color } );
+					//console.log(wireObj.color);
+					var path = new WireCurve( wireObj );
+					var geometry = new THREE.TubeBufferGeometry( path, 1000, wireObj.cs_radius, 8, false );
+					//console.log(wireObj.cs_radius);
+					var mesh = new THREE.Mesh( geometry, material );
+					scene.add( mesh );
+				});
+				});
+				
+				fetch("Case3.fieldTAU.dat.json")
+				.then((response)=>{return response.json()})
+				.then((fieldObj)=>{
+					for(var i=0;i<fieldObj.origin.length;i++){
+						var dir = new THREE.Vector3( fieldObj.vector[i][1] , fieldObj.vector[i][2] , fieldObj.vector[i][0] );
+						var length = dir.length()*0.5;
+						dir.normalize();
+						var org = new THREE.Vector3( fieldObj.origin[i][1] , fieldObj.origin[i][2] , fieldObj.origin[i][0] );
+						var arrowHelper = new THREE.ArrowHelper( dir , org , length , fieldObj.color , length*0.2 , length*0.2);
+						scene.add( arrowHelper );
+					}
+				});
+
+				/*fetch("sampleAnimatedField.json")
+				.then((response)=>{return response.json()})
+				.then((fieldObj)=>{
+					for(var i=0;i<fieldObj.frames.length;i++){
+						var frame=new Array();
+						for(var j=0;j<fieldObj.frames[i].origin.length;j++){
+							var dir=new THREE.Vector3(fieldObj.frames[i].vector[j][1],fieldObj.frames[i].vector[j][2],fieldObj.frames[i].vector[j][0]);
+							var length=dir.length();
+							dir.normalize();
+							var org=new THREE.Vector3(fieldObj.frames[i].origin[j][1],fieldObj.frames[i].origin[j][2],fieldObj.frames[i].origin[j][0]);
+							var arrowHelper=new THREE.ArrowHelper(dir,org,length,fieldObj.color,length*0.2,length*0.1);
+							scene.add(arrowHelper);
+							frame.push(arrowHelper);
+							arrowHelper.visible=false;
+						}
+						ArrowArray.push(frame);
+					}
+				});*/
+
+                scene.add( new THREE.AxesHelper( 20 ) );
+				//
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				//document.addEventListener( 'touchstart', onDocumentTouchStart, false );
+				//document.addEventListener( 'touchmove', onDocumentTouchMove, false );
+				//
+				//window.addEventListener( 'resize', onWindowResize, false );
+			}
+			function onWindowResize() {
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+			//
+			function onDocumentMouseMove( event ) {
+				mouseX = event.clientX - windowHalfX;
+				mouseY = event.clientY - windowHalfY;
+			}
+			function onDocumentTouchStart( event ) {
+				if ( event.touches.length > 1 ) {
+					event.preventDefault();
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+				}
+			}
+			function onDocumentTouchMove( event ) {
+				if ( event.touches.length == 1 ) {
+					event.preventDefault();
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+				}
+			}
+			//
+			function animate() {
+                requestAnimationFrame( animate );
+                //controls.update();
+				//var time = Date.now() * 0.0005;
+				//var length = Math.abs(Math.sin(time))
+				//if(ArrawArray[100])ArrawArray[100].setLength( length, 0.2 * length, 0.04 * length );
+				frameCounter+=0.3;
+				if(ArrowArray.length==36){
+				ArrowArray[Math.floor(frameCounter)%36].forEach((arrowObject)=>{
+					arrowObject.visible=false;
+				});
+				ArrowArray[Math.floor(frameCounter+1)%36].forEach((arrowObject)=>{
+					arrowObject.visible=true;
+				});
+				}
+                render();
+			}
+
+			function render() {
+                //material.resolution.set( 640, 480 );
+				//camera.position.x += ( mouseX - camera.position.x ) * 0.1;
+				//camera.position.y += ( - mouseY + 2000 - camera.position.y ) * 0.15;
+				//camera.lookAt( scene.position );
+				/*var time = Date.now() * 0.0005;
+				for ( var i = 0; i < scene.children.length; i ++ ) {
+					var object = scene.children[ i ];
+					if ( object.isLine ) {
+						object.rotation.y = time * ( i % 2 ? 1 : - 1 );
+					}
+				}*/
+				renderer.render( scene, camera );
+			}
+			//default constructor
+			function WireCurve( wireObj ) {
+				THREE.Curve.call( this );
+				this.keyPoints = ( wireObj === undefined) ? [[0,0,0],[1,1,1]] : wireObj.data;
+			}
+
+			WireCurve.prototype = Object.create( THREE.Curve.prototype );
+			WireCurve.prototype.constructor = WireCurve;
+
+			WireCurve.prototype.getPoint = function ( t ) {
+				var sc = this.keyPoints.length - 1;
+				if( t == 1 ) t -= Number.EPSILON;
+				var pt = Math.floor(t * sc);
+				var frac = t - pt / sc;
+				var tx = this.keyPoints[ pt ][ 1 ] + ( this.keyPoints[ pt + 1 ][ 1 ] - this.keyPoints[ pt ][ 1 ] ) * frac;
+				var ty = this.keyPoints[ pt ][ 2 ] + ( this.keyPoints[ pt + 1 ][ 2 ] - this.keyPoints[ pt ][ 2 ] ) * frac;
+				var tz = this.keyPoints[ pt ][ 0 ] + ( this.keyPoints[ pt + 1 ][ 0 ] - this.keyPoints[ pt ][ 0 ] ) * frac;
+				return new THREE.Vector3( tx, ty, tz);
+			}
+
+		</script>
+	</body>
+</html>

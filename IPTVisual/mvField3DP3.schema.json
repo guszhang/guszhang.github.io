@@ -1,0 +1,40 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://peu.cloud/schema/mv/mvField3DP3.schema.json",
+    "title": "mvField3DP3",
+    "description": "MagVisual 3D Field Array with 3D vectors",
+    "type": "object",
+    "properties": {
+        "uid": {
+            "description": "unique id of the 3D array",
+            "type": "string"
+        },
+        "tag": {
+            "description": "data tag",
+            "type": "string"
+        },
+        "origin":{
+            "description": "data origin",
+            "type": "array",
+            "items": {
+                "$ref": "./mvPoint3.schema.json"
+            },
+            "minItems": 1
+        },
+        "vector": {
+            "description": "data vector",
+            "type": "array",
+            "items":{
+                "$ref": "./mvPoint3.schema.json"
+            },
+            "minItems": 1
+        },
+        "color":{
+            "description": "color for display",
+            "type": "string"
+        }
+    },
+    "required": [
+        "uid","tag","origin","vector"
+    ]
+}

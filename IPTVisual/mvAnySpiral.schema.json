@@ -1,0 +1,22 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://peu.cloud/schema/mv/mvAnySpiral.schema.json",
+    "title": "mvAnySpiral",
+    "description": "MagVisual Any Spiral Conductor Object",
+    "type": "object",
+    "properties": {
+        "uid":{
+            "description": "unique id of the any spiral object",
+            "type": "string"
+        },
+        "data":{
+            "description": "data storage",
+            "type": "array",
+            "items":{
+                "description": "point coordinates 3-Dimensional",
+                "$ref": "./mvPoint3.schema.json"
+            }
+        }
+        
+    }
+}

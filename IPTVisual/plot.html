@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+    <script src="https://www.chartjs.org/dist/2.8.0/Chart.min.js"></script>
+    <script src="./datainjection.js"></script>
+</head>    
+<body>
+        <canvas id="canvas"></canvas>
+        <script>
+            var timeFormat = 'DD.MM.YYYY';
+
+            var config = {
+                type:    'bar',
+                data:    {
+                    datasets: [
+                        //{
+                        //     label: "US Dates",
+                        //     data: [{
+                        //         t: "04/01/2014", y: 175
+                        //     }, {
+                        //         t: "10/01/2014", y: 175
+                        //     }, {
+                        //         t: "04/01/2015", y: 178
+                        //     }, {
+                        //         t: "10/01/2015", y: 178
+                        //     }],
+                        //     fill: true,
+                        //     borderColor: 'red',
+                        //     backgroundColor: '#ffaaaa',
+                        //     type: 'bar',
+                            
+                        // },
+                        {
+                            label: "Product A",
+                            data:  Aseries,
+                            fill:  true,
+                            borderColor: "rgba(151,187,205,1)",
+                            backgroundColor: "rgba(151,187,205,1)",
+                            type: 'bar'
+                        },
+                        {
+                            label: "Product B",
+                            data:  Bseries,
+                            fill:  true,
+                            borderColor: "rgba(220,220,220,1)",
+                            backgroundColor: "rgba(220,220,220,1)",
+                            type: 'bar'
+                        },
+                        {
+                            label: "Product C",
+                            data:  Cseries,
+                            fill:  true,
+                            borderColor: "rgba(66,135,245,1)",
+                            backgroundColor: "rgba(66,135,245,1)",
+                            type: 'bar'
+                        },
+                        {
+                            label: "Product D",
+                            data:  Dseries,
+                            fill:  true,
+                            borderColor: "rgba(134,28,184,1)",
+                            backgroundColor: "rgba(134,28,184,1)",
+                            type: 'bar'
+                        },
+                        {
+                            label: "Product E",
+                            data:  Eseries,
+                            fill:  true,
+                            borderColor: "rgba(19,156,80,1)",
+                            backgroundColor: "rgba(19,156,80,1)",
+                            type: 'bar'
+                        },
+                        {
+                            label: "Product F",
+                            data:  Fseries,
+                            fill:  true,
+                            borderColor: "rgba(219,162,18,1)",
+                            backgroundColor: "rgba(219,162,18,1)",
+                            type: 'bar'
+                        },
+                        {
+                            label: "Product H",
+                            data:  Hseries,
+                            fill:  true,
+                            borderColor: "rgba(18,179,219,1)",
+                            backgroundColor: "rgba(18,179,219,1)",
+                            type: 'bar'
+                        },
+                        {
+                            label: "Product I",
+                            data:  Iseries,
+                            fill:  true,
+                            borderColor: "rgba(219,18,115,1)",
+                            backgroundColor: "rgba(219,18,115,1)",
+                            type: 'bar'
+                        },
+                        {
+                            label: "Product J",
+                            data:  Jseries,
+                            fill:  true,
+                            borderColor: "rgba(149,230,57,1)",
+                            backgroundColor: "rgba(149,230,57,1)",
+                            type: 'bar'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    title:      {
+                        display: true,
+                        text:    "Qty"
+                    },
+                    scales:     {
+                        xAxes: [{
+                            type:       "time",
+                            time:       {
+                                parser: timeFormat,
+                                tooltipFormat: 'll'
+                            },
+                            distribution: "series",
+                            ticks: {
+                                source: "data",
+                                autoSkip: true
+                            },
+                            scaleLabel: {
+                                display:     true,
+                                labelString: 'Date'
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                display:     true,
+                                labelString: 'value'
+                            }
+                        }]
+                    }
+                }
+            };
+            //console.log(adata);
+            window.onload = function () {
+                var ctx       = document.getElementById("canvas").getContext("2d");
+                window.myLine = new Chart(ctx, config);
+            };
+            </script>
+</body>
+</html>

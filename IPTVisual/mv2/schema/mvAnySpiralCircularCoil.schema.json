@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://peu.cloud/mv2/schema/mvAnySpiralCircularCoil.schema.json",
+    "title": "mvAnySpiral",
+    "description": "MagVisual Any Spiral Conductor Object",
+    "type": "object",
+    "properties": {
+        "uid":{
+            "description": "unique id of the any spiral object",
+            "type": "string"
+        },
+        "keyPoints":{
+            "description": "key point data storage",
+            "type": "array",
+            "items":{
+                "description": "point coordinates 3-Dimensional",
+                "$ref": "http://peu.cloud/mv2/schema/mvPoint3.schema.json"
+            },
+            "minItems": 2
+        },
+        "cs_radius":{
+            "description": "cross sectional radius",
+            "type": "number"
+        },
+        "color":{
+            "description": "color for display",
+            "type": "string"
+        },
+        "normal":{
+            "description": "initial normal vector",
+            "$ref": "http://peu.cloud/mv2/schema/mvPoint3.schema.json"
+        },
+        "offset":{
+            "description": "initial normal vector",
+            "$ref": "http://peu.cloud/mv2/schema/mvPoint3.schema.json"
+        }
+    },
+    "required": ["keyPoints","cs_radius","color"]
+}

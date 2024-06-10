@@ -1,0 +1,39 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "id": "http://peu.cloud/mv2/schema/mvSinglerLayeCircularCoil.schema.json",
+    "description": "Descriptions of a single turn circular winding",
+    "title": "mvSingleCircular",
+    "type": "object",
+    "properties":{
+        "uid": {
+            "description": "unique id of the print",
+            "type": "string"
+        },
+        "radius":{
+            "title": "radius",
+            "description": "Radius of the circle ring.",
+            "type": "number"
+        },
+        "cs_radius":{
+            "title": "cs_radius",
+            "description": "Cross-section radius of the wire.",
+            "type": "number"
+        },
+        "color":{
+            "title": "color",
+            "description": "Color of the winding",
+            "type": "string"
+        },
+        "normal":{
+            "description": "initial normal vector",
+            "$ref": "http://peu.cloud/mv2/schema/mvPoint3.schema.json"
+        },
+        "offset":{
+            "description": "initial normal vector",
+            "$ref": "http://peu.cloud/mv2/schema/mvPoint3.schema.json"
+        }
+    },
+    "required": [
+        "radius","cs_radius"
+    ]
+}

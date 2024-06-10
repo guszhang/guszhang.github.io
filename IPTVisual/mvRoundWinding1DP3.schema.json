@@ -1,0 +1,36 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://peu.cloud/schema/mv/mvRoundWinding1DP3.schema.json",
+    "title": "mvArr1D",
+    "description": "MagVisual round cross-section wingding object 1-Dimensional with 3D coordinates",
+    "type": "object",
+    "properties": {
+        "uid": {
+            "description": "unique id of the 1D array",
+            "type": "string"
+        },
+        "tag": {
+            "description": "data tag",
+            "type": "string"
+        },
+        "data": {
+            "description": "data storage",
+            "type": "array",
+            "items":{
+                "$ref": "./mvPoint3.schema.json"
+            },
+            "minItems": 1
+        },
+        "cs_radius":{
+            "description": "cross section radius",
+            "type": "number"
+        },
+        "color":{
+            "description": "color for display",
+            "type": "string"
+        }
+    },
+    "required": [
+        "uid","tag","data","cs_radius"
+    ]
+}

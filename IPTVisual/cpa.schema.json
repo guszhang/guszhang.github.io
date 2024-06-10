@@ -1,0 +1,121 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "$id": "https://peu.cloud/cpa.schema.json",
+    "title": "CPA PCB format",
+    "description": "A polygon based PCB manufacturing data description",
+    "type": "object",
+    "properties": {
+        "PCBName": {
+            "description": "Name of the PCB file",
+            "type": "string"
+        },
+        "Nets": {
+            "description": "Container of Nets",
+            "type": "array",
+            "items": {
+                "description": "Net object",
+                "type": "object",
+                "properties": {
+                    "NetName": {
+                        "description": "Name of the Net",
+                        "type": "string"
+                    },
+                    "Layers": {
+                        "description": "Container for Layers",
+                        "type": "array",
+                        "items": {
+                            "description": "Layer object",
+                            "type": "object",
+                            "properties": {
+                                "LayerName": {
+                                    "description": "Name of the Layer",
+                                    "type": "string"
+                                },
+                                "CopperPieces": {
+                                    "description": "Container for CopperPieces",
+                                    "type": "array",
+                                    "items": {
+                                        "description": "CopperPiece",
+                                        "type": "object",
+                                        "properties": {
+                                            "OuterBoundary": {
+                                                "description": "Polygon of outer boundary",
+                                                "type": "array",
+                                                "items": {
+                                                    "description": "Vertex",
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "x": {
+                                                            "type": "number"
+                                                        },
+                                                        "y": {
+                                                            "type": "number"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "InnerBoundaries": {
+                                                "description": "Container for inner boundaries",
+                                                "type": "array",
+                                                "items": {
+                                                    "description": "Polygon of inner boundary",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "description": "Vertex",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "x": {
+                                                                "type": "number"
+                                                            },
+                                                            "y": {
+                                                                "type": "number"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "Vias": {
+                        "description": "Container for Vias",
+                        "type": "array",
+                        "items": {
+                            "description": "Via object",
+                            "type": "object",
+                            "properties": {
+                                "Center": {
+                                    "description": "Center Vertex",
+                                    "type": "object",
+                                    "properties": {
+                                        "x": {
+                                            "type": "number"
+                                        },
+                                        "y": {
+                                            "type": "number"
+                                        }
+                                    }
+                                },
+                                "Diameter": {
+                                    "description": "Diameter",
+                                    "type": "number"
+                                },
+                                "Layers": {
+                                    "description": "Container for Layers",
+                                    "type": "array",
+                                    "items": {
+                                        "description": "Layer",
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

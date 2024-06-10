@@ -1,0 +1,21 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://peu.cloud/mv2/schema/mvStraightSgement.schema.json",
+    "title": "mvStraightSegment",
+    "description": "MagVisual straight segment object",
+    "type": "object",
+    "properties": {
+        "head": {
+            "description": "head point of the segment",
+            "$ref": "http://peu.cloud/mv2/schema/mvPoint3.schema.json"
+        },
+        "rear": {
+            "description": "head point of the segment",
+            "$ref": "http://peu.cloud/mv2/schema/mvPoint3.schema.json"
+        }
+    },
+    "required": [
+        "head",
+        "rear"
+    ]
+}
